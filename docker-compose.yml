@@ -24,6 +24,8 @@ services:
     build:
       context: ./src/frontend
       dockerfile: ../../docker/frontend/Dockerfile
+      args:
+        - API_HOST=//localhost:3000
     ports:
       - 5000:5000
 

@@ -36,7 +36,7 @@ export default {
   methods: {
     pullData() {
       return this.$axios
-        .get('http://MRA_BACKEND:3000/players/week')
+        .get(process.env.API_HOST+'/players/week')
         .then((response) => {
           this.extractPlayerData(response.data)
           this.extractLabelData(response.data)

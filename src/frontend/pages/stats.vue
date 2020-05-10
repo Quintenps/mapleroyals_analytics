@@ -72,7 +72,7 @@ export default {
   methods: {
     pullData() {
       return this.$axios
-        .get('http://MRA_BACKEND:3000/stats')
+        .get(process.env.API_HOST+'/stats')
         .then((response) => {
           this.extractData(response.data)
         })
