@@ -1,0 +1,40 @@
+{
+  "name": "mapleroyals-analytics",
+  "version": "1.0.0",
+  "description": "PlayerAnalytics",
+  "author": "Quinten Peels",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.28",
+    "@fortawesome/free-brands-svg-icons": "^5.13.0",
+    "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/bulma": "^1.2.1",
+    "chart.js": "^2.9.3",
+    "hint.css": "^2.6.0",
+    "node-sass": "^4.14.1",
+    "nuxt": "^2.0.0",
+    "nuxt-fontawesome": "^0.4.0",
+    "sass-loader": "^8.0.2",
+    "vue-chartjs": "^3.5.0"
+  },
+  "devDependencies": {
+    "@creativebulma/bulma-tooltip": "^1.0.2",
+    "@nuxtjs/eslint-config": "^2.0.0",
+    "@nuxtjs/eslint-module": "^1.0.0",
+    "@types/prettier": "^1.19.1",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-nuxt": ">=0.4.2",
+    "eslint-plugin-prettier": "^3.1.2",
+    "prettier": "^1.19.1"
+  }
+}

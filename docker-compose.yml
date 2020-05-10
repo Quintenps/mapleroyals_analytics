@@ -1,0 +1,32 @@
+version: "3.1"
+services:
+  db:
+    container_name: MRA_DB
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docker/mysql/data:/docker-entrypoint-initdb.d/
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ec8phurdRXyQk54Y
+      MYSQL_DATABASE: mapleroyals_analytics
+      MYSQL_USER: tiger
+      MYSQL_PASSWORD: genesis30ftw
+  node_app:
+    container_name: MRA_BACKEND
+    build:
+      context: ./src/backend
+      dockerfile: ../../docker/backend/Dockerfile
+    ports:
+      - 3000:3000
+  nuxt_app:
+    container_name: MRA_FRONTEND
+    build:
+      context: ./src/frontend
+      dockerfile: ../../docker/frontend/Dockerfile
+    ports:
+      - 5000:5000
+
+volumes:
+  db_data:
+    driver: local
