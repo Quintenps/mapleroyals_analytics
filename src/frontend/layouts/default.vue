@@ -40,7 +40,7 @@
                 formatNumber(data.MostPopularHour.players) +
                   ' hourly average players'
               "
-              subtitle="Most popular hour (UTC)"
+              subtitle="Most popular hour"
             />
           </div>
         </div>
@@ -124,7 +124,7 @@ export default {
   methods: {
     pullData() {
       return this.$axios
-        .get(process.env.API_HOST+'/stats/popular')
+        .get(process.env.API_HOST + '/stats/popular')
         .then((response) => {
           this.data = response.data
         })
@@ -133,12 +133,14 @@ export default {
       if (isNaN(num)) return num
 
       if (num < 1000000) {
-        return parseFloat(num / 1000).toFixed(2) + 'K'
+        return parseFloat(num / 1000).toFixed(1) + 'K'
       }
     },
     parseTo12hTime(date) {
-      const time = new Date(date)
-      return time.toLocaleString('utc', { hour: 'numeric', hour12: true })
+      return this.$moment
+        .utc(date, 'DD-MM-YYYY HH:mm:ss')
+        .local()
+        .format('h A')
     }
   }
 }
@@ -148,6 +150,10 @@ export default {
 .nuxt-link-exact-active.nuxt-link-active {
   background-color: #3273dc;
   color: #fff;
+}
+
+.fa-github {
+  color: #211f1f;
 }
 
 .subtitle {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="title">Player activity</h1>
-    <h2 class="subtitle">From today (UTC)</h2>
+    <h2 class="subtitle">From today</h2>
     <line-chart v-if="initiated" :chartdata="datacollection" />
   </div>
 </template>
@@ -36,10 +36,10 @@ export default {
   methods: {
     pullData() {
       return this.$axios
-        .get(process.env.API_HOST+'/players/today')
+        .get(process.env.API_HOST + '/players/today')
         .then((response) => {
           this.extractPlayerData(response.data)
-          this.extractLabelData(response.data)
+          this.extractLabelData(response.data, this.$moment)
           this.initiated = true
         })
     },
@@ -50,17 +50,14 @@ export default {
       })
       this.datacollection.datasets[0].data = arr
     },
-    extractLabelData(response) {
+    extractLabelData(response, moment) {
       const arr = []
       response.forEach(function(row) {
-        const date = new Date(row.date_format)
-        arr.push(
-          date.toLocaleString('utc', {
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: true
-          })
-        )
+        const date = moment
+          .utc(row.date_format, 'DD-MM-YYYY HH:mm:ss')
+          .local()
+          .format('HH:mm')
+        arr.push(date)
       })
       this.datacollection.labels = arr
     }

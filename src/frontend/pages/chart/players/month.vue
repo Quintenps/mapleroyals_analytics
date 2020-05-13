@@ -36,7 +36,7 @@ export default {
   methods: {
     pullData() {
       return this.$axios
-        .get(process.env.API_HOST+'/players/month')
+        .get(process.env.API_HOST + '/players/month')
         .then((response) => {
           this.extractPlayerData(response.data)
           this.extractLabelData(response.data)
