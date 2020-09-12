@@ -3,7 +3,7 @@ var router = express.Router();
 
 const {getMostPopularStatsWrapper} = require('../models/popular-tiles');
 const {getStatsWrapper} = require('../models/stats/wrapper')
-const {getPlayersLastHour, getPlayersToday, getPlayersLastWeek, getPlayersLastMonth} = require('../models/charts/players');
+const {getPlayersHourlyThisWeek, getPlayersThisWeek, getPlayersWeekly, getPlayersLastMonth} = require('../models/charts/players');
 
 router.get('/', function (req, res) {
     res.sendStatus(200)
@@ -20,17 +20,17 @@ router.get('/stats/popular', async function (req, res) {
 });
 
 router.get('/players/hour', async function (req, res) {
-    let value = await getPlayersLastHour();
-    res.send(value);
-});
-
-router.get('/players/today', async function (req, res) {
-    let value = await getPlayersToday();
+    let value = await getPlayersHourlyThisWeek();
     res.send(value);
 });
 
 router.get('/players/week', async function (req, res) {
-    let value = await getPlayersLastWeek();
+    let value = await getPlayersThisWeek();
+    res.send(value);
+});
+
+router.get('/players/weekly', async function (req, res) {
+    let value = await getPlayersWeekly();
     res.send(value);
 });
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="title">Player activity</h1>
-    <h2 class="subtitle">From the last month</h2>
+    <h2 class="subtitle">Average players per month</h2>
     <line-chart v-if="initiated" :chartdata="datacollection" />
   </div>
 </template>
@@ -17,17 +17,16 @@ export default {
         labels: [],
         datasets: [
           {
-            label: 'Hourly players',
-            backgroundColor: 'rgba(159,204,0,0.2)',
-            borderColor: 'rgba(159,204,0,1)',
-            pointBackgroundColor: 'rgba(159,204,0,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: 'rgba(159,204,0,0.8)',
-            pointHoverBorderColor: 'rgba(159,204,0,1)',
-            data: []
-          }
-        ]
-      }
+            label: 'Average players',
+            borderColor: '#35AF6C',
+            pointBackgroundColor: '#35AF6C',
+            borderWidth: 2,
+            pointBorderColor: '#35AF6C',
+            backgroundColor: 'rgba(0,0,0,0)',
+            data: [],
+          },
+        ],
+      },
     }
   },
   mounted() {
@@ -45,18 +44,18 @@ export default {
     },
     extractPlayerData(response) {
       const arr = []
-      response.forEach(function(row) {
+      response.forEach(function (row) {
         arr.push(row.players)
       })
       this.datacollection.datasets[0].data = arr
     },
     extractLabelData(response) {
       const arr = []
-      response.forEach(function(row) {
+      response.forEach(function (row) {
         arr.push(row.month_name)
       })
       this.datacollection.labels = arr
-    }
-  }
+    },
+  },
 }
 </script>

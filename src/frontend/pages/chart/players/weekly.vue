@@ -1,7 +1,9 @@
 <template>
   <div>
     <h1 class="title">Player activity</h1>
-    <h2 class="subtitle">Current week</h2>
+    <h2 class="subtitle">
+      Average players per day from the past weeks. Weeks are per week number.
+    </h2>
     <line-chart v-if="initiated" :chartdata="datacollection" />
   </div>
 </template>
@@ -34,20 +36,20 @@ export default {
   methods: {
     pullData() {
       return this.$axios
-        .get(process.env.API_HOST + '/players/week')
+        .get(process.env.API_HOST + '/players/weekly')
         .then((response) => {
           this.extractPlayerData(response.data)
-          this.extractLabelData(response.data, this.$moment)
+          this.extractLabelData(response.data)
           this.initiated = true
         })
     },
     extractPlayerData(response) {
       const arr = []
       response.forEach(function (row) {
-        if (!arr[row.day_name]) {
-          arr[row.day_name] = []
+        if (!arr[row.week]) {
+          arr[row.week] = []
         }
-        arr[row.day_name].push(row.players)
+        arr[row.week].push(row.players)
       })
       Object.keys(arr).forEach((key) => {
         const position = Object.keys(arr).indexOf(key)
@@ -63,16 +65,11 @@ export default {
         })
       })
     },
-    extractLabelData(response, moment) {
+    extractLabelData(response) {
       const arr = []
       response.forEach(function (row) {
-        const date = moment
-          .utc(row.date_format, 'DD-MM-YYYY HH:mm:ss')
-          .local()
-          .format('HH:mm')
-
-        if (!arr.includes(date)) {
-          arr.push(date)
+        if (!arr.includes(row.day_name)) {
+          arr.push(row.day_name)
         }
       })
       this.datacollection.labels = arr

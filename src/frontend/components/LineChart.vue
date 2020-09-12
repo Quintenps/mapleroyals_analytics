@@ -6,7 +6,7 @@ export default {
   props: {
     chartdata: {
       type: Object,
-      default: null
+      default: null,
     },
     options: {
       type: Object,
@@ -15,23 +15,23 @@ export default {
           responsive: true,
           maintainAspectRatio: false,
           legend: {
-            display: false
+            display: true,
           },
           scales: {
             yAxes: [
               {
                 ticks: {
-                  beginAtZero: true
-                }
-              }
-            ]
-          }
+                  beginAtZero: true,
+                },
+              },
+            ],
+          },
         }
-      }
-    }
+      },
+    },
   },
   mounted() {
     this.renderChart(this.chartdata, this.options)
-  }
+  },
 }
 </script>

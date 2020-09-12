@@ -5,7 +5,7 @@
       <span v-if="tooltipMsg" class="hint--top" :aria-label="tooltipMsg">
         <font-awesome-icon
           :icon="['fas', 'question-circle']"
-          style="font-size:24px"
+          style="font-size: 24px"
         ></font-awesome-icon>
       </span>
     </p>
@@ -18,16 +18,16 @@ export default {
   props: {
     title: {
       default: '0k',
-      type: String
+      type: String,
     },
     tooltipMsg: {
       default: null,
-      type: String
+      type: String,
     },
     subtitle: {
       default: 'Last month',
-      type: String
-    }
-  }
+      type: String,
+    },
+  },
 }
 </script>

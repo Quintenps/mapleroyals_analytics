@@ -4,7 +4,7 @@ let pool;
 
 const init = async () => {
     pool = await mysql.createPool({
-        host: 'db',
+        host: 'localhost',
         port: '3306',
         user: 'tiger',
         password: 'genesis30ftw',

@@ -3,8 +3,8 @@
     <section class="section">
       <div class="container">
         <div class="columns is-centered">
-          <div class="column is-two-fifths">
-            <a href="/">
+          <div class="column is-two-fifths has-text-centered">
+            <a href="/" class="">
               <img class="logo" src="/logo.png" />
             </a>
           </div>
@@ -15,7 +15,7 @@
               v-if="data"
               :title="formatNumber(data.mostPlayers.players)"
               :tooltip-msg="'Registered at: ' + data.mostPlayers.day_format"
-              subtitle="Most average players ever in a day"
+              subtitle="Most avg players ever in a day"
             />
           </div>
           <div class="column">
@@ -38,7 +38,7 @@
               :title="parseTo12hTime(data.MostPopularHour.full_date)"
               :tooltip-msg="
                 formatNumber(data.MostPopularHour.players) +
-                  ' hourly average players'
+                ' hourly average players'
               "
               subtitle="Most popular hour"
             />
@@ -59,7 +59,7 @@
                     <nuxt-link to="/">Index</nuxt-link>
                   </li>
                   <li>
-                    <nuxt-link to="/stats">Stats</nuxt-link>
+                    <nuxt-link to="/about">About</nuxt-link>
                   </li>
                 </ul>
                 <p class="menu-label">
@@ -73,13 +73,10 @@
                     <nuxt-link to="/chart/players/month">Month</nuxt-link>
                   </li>
                   <li>
-                    <nuxt-link to="/chart/players/week">Week</nuxt-link>
+                    <nuxt-link to="/chart/players/weekly">Weekly</nuxt-link>
                   </li>
                   <li>
-                    <nuxt-link to="/chart/players/today">Today</nuxt-link>
-                  </li>
-                  <li>
-                    <nuxt-link to="/chart/players/hour">Hour</nuxt-link>
+                    <nuxt-link to="/chart/players/week">This week</nuxt-link>
                   </li>
                 </ul>
               </aside>
@@ -115,7 +112,7 @@ export default {
   data() {
     return {
       initiated: false,
-      data: null
+      data: null,
     }
   },
   mounted() {
@@ -137,12 +134,9 @@ export default {
       }
     },
     parseTo12hTime(date) {
-      return this.$moment
-        .utc(date, 'DD-MM-YYYY HH:mm:ss')
-        .local()
-        .format('h A')
-    }
-  }
+      return this.$moment.utc(date, 'DD-MM-YYYY HH:mm:ss').local().format('h A')
+    },
+  },
 }
 </script>
 
@@ -168,5 +162,10 @@ html,
 body,
 footer {
   background-color: #f3f5f7 !important;
+}
+
+.logo {
+  max-height: 100%;
+  max-width: 320px;
 }
 </style>
