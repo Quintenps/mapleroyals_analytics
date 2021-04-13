@@ -24,13 +24,13 @@ jobs:
         with:
           push: true
           file: ./docker/backend/Dockerfile
-          context: ./src/backend
-          tags: quintenps/quintenps/mapleroyals_backend
+          context: src/backend
+          tags: quintenps/mapleroyals_backend
       - name: Build and push (Frontend)
         id: docker_build_frontend
         uses: docker/build-push-action@v2
         with:
           push: true
           file: ./docker/frontend/Dockerfile
-          context: ./src/frontend
-          tags: quintenps/quintenps/mapleroyals_frontend
+          context: src/frontend
+          tags: quintenps/mapleroyals_frontend
