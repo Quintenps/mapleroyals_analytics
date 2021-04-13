@@ -2,7 +2,7 @@ version: "3.1"
 services:
   db:
     container_name: MRA_DB
-    image: mysql:8.0.23
+    image: mysql:5.7
     volumes:
       - db_data:/var/lib/mysql
       - ./docker/mysql/data:/docker-entrypoint-initdb.d/
@@ -18,9 +18,6 @@ services:
   backend:
     container_name: MRA_BACKEND
     image: quintenps/mapleroyals_backend
-    build:
-      context: ./src/backend
-      dockerfile: ../../docker/backend/Dockerfile
     ports:
       - 3000:3000
     environment:
