@@ -32,12 +32,11 @@ services:
 
   frontend:
     container_name: MRA_FRONTEND
-    image: quintenps/mapleroyals_frontend
     build:
       context: ./src/frontend
       dockerfile: ../../docker/frontend/Dockerfile
-    environment:
-      API_HOST: "http://backend:3000"
+      args:
+        VUE_APP_API_HOST: "http://localhost:3000"
     ports:
       - 80:80
 

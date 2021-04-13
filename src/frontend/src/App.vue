@@ -100,9 +100,8 @@ export default {
   }),
   methods: {
     getPlayerData() {
-      console.log("API HOST: " + this.$API_HOST);
       axios
-        .get(this.$API_HOST + "/players")
+        .get(process.env.VUE_APP_API_HOST + "/players")
         .then((resp) => {
           resp.data.forEach((element) => {
             this.options.xaxis.categories.push(element["DATE_FORMAT"]);
