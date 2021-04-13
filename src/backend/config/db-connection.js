@@ -4,11 +4,11 @@ let pool;
 
 const init = async () => {
     pool = await mysql.createPool({
-        host: 'localhost',
-        port: '3306',
-        user: 'tiger',
-        password: 'genesis30ftw',
-        database: 'mapleroyals_analytics'
+        host: process.env.MYSQL_HOST   || 'localhost',
+        port: process.env.MYSQL_PORT   || '3306',
+        user: process.env.MYSQL_USER   || 'tiger',
+        password: process.env.MYSQL_PASSWORD || 'genesis30ftw',
+        database: process.env.MYSQL_DATABASE || 'mapleroyals_analytics'
     });
 };
 

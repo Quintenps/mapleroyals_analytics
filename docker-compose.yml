@@ -2,32 +2,44 @@ version: "3.1"
 services:
   db:
     container_name: MRA_DB
-    image: mysql:5.7
+    image: mysql:8.0.23
     volumes:
       - db_data:/var/lib/mysql
       - ./docker/mysql/data:/docker-entrypoint-initdb.d/
+    ports:
+      - 3306:3306
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ec8phurdRXyQk54Y
+      MYSQL_ROOT_PASSWORD: Quintenps_mapleroyals_analytics
       MYSQL_DATABASE: mapleroyals_analytics
       MYSQL_USER: tiger
       MYSQL_PASSWORD: genesis30ftw
-  node_app:
+
+  backend:
     container_name: MRA_BACKEND
+    image: quintenps/mapleroyals_backend
     build:
       context: ./src/backend
       dockerfile: ../../docker/backend/Dockerfile
     ports:
       - 3000:3000
-  nuxt_app:
+    environment:
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: mapleroyals_analytics
+      MYSQL_USER: tiger
+      MYSQL_PASSWORD: genesis30ftw
+
+  frontend:
     container_name: MRA_FRONTEND
+    image: quintenps/mapleroyals_frontend
     build:
       context: ./src/frontend
       dockerfile: ../../docker/frontend/Dockerfile
-      args:
-        - API_HOST=//localhost:3000
+    environment:
+      API_HOST: "http://backend:3000"
     ports:
-      - 5000:5000
+      - 80:80
 
 volumes:
   db_data:

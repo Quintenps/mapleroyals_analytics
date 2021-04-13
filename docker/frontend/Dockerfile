@@ -1,18 +1,11 @@
-FROM node:14.9.0-alpine3.10
-ARG API_HOST
+FROM node:15.14.0-alpine3.10 as build-stage
+WORKDIR /app
+COPY package*.json ./
+RUN yarn install
+COPY ./ .
+RUN yarn run build
 
-RUN mkdir -p /usr/src/nuxt-app
-WORKDIR /usr/src/nuxt-app
-
-RUN apk update && apk upgrade
-
-COPY . /usr/src/nuxt-app/
-RUN npm install
-RUN npm run build
-
-EXPOSE 5000
-
-ENV NUXT_HOST=0.0.0.0
-ENV NUXT_PORT=5000
-
-CMD [ "npm", "start" ]
+FROM nginx as production-stage
+RUN mkdir /app
+COPY --from=build-stage /app/dist /app
+COPY nginx.conf /etc/nginx/nginx.conf
