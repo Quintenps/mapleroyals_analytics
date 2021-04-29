@@ -1,6 +1,6 @@
 <template>
   <div class="container py-5">
-    <div class="row">
+    <div class="row mb-5">
       <div class="col-12 text-center">
         <img
           alt="Mapleroyals analytics logo"
@@ -9,13 +9,148 @@
         />
       </div>
     </div>
-    <div class="row my-5">
+    <div class="row mb-5">
+      <div class="col-12 col-md-3 col-xl-3 my-2 my-xl-0">
+        <div class="card">
+          <div class="card-body">
+            <h3>{{ this.tileData?.online?.[0].players }}</h3>
+            <h6>Players online now</h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-3 col-xl-3 my-2 my-xl-0">
+        <div class="card">
+          <div class="card-body">
+            <h3>{{ this.tileData?.daily?.[1].players }}</h3>
+            <h6 v-if="this.tileData?.daily">
+              Players online daily
+              <span
+                v-if="isNegativeStringNumber(this.tileData?.daily?.percentage)"
+                style="font-size:12px"
+              >
+                (<font-awesome-icon
+                  :icon="['fas', 'arrow-down']"
+                  style="color:red"
+                />
+                {{ this.tileData?.daily?.percentage }}%)
+              </span>
+              <span v-else style="font-size:12px">
+                (<font-awesome-icon
+                  :icon="['fas', 'arrow-up']"
+                  style="color:green"
+                />
+                {{ this.tileData?.daily?.percentage }}%)
+              </span>
+            </h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-3 col-xl-3 my-2 my-xl-0">
+        <div class="card">
+          <div class="card-body">
+            <h3>{{ this.tileData?.weekly?.[1].players }}</h3>
+            <h6 v-if="this.tileData?.weekly">
+              Players online weekly
+              <span
+                v-if="isNegativeStringNumber(this.tileData?.weekly?.percentage)"
+                style="font-size:12px"
+              >
+                (<font-awesome-icon
+                  :icon="['fas', 'arrow-down']"
+                  style="color:red"
+                />
+                {{ this.tileData?.weekly?.percentage }}%)
+              </span>
+              <span v-else style="font-size:12px">
+                (<font-awesome-icon
+                  :icon="['fas', 'arrow-up']"
+                  style="color:green"
+                />
+                {{ this.tileData?.weekly?.percentage }}%)
+              </span>
+            </h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-3 col-xl-3 my-2 my-xl-0">
+        <div class="card">
+          <div class="card-body">
+            <h3>{{ this.tileData?.monthly?.[1].players }}</h3>
+            <h6 v-if="this.tileData?.monthly">
+              Players online monthly
+              <span
+                v-if="
+                  isNegativeStringNumber(this.tileData?.monthly?.percentage)
+                "
+                style="font-size:12px"
+              >
+                (<font-awesome-icon
+                  :icon="['fas', 'arrow-down']"
+                  style="color:red"
+                />
+                {{ this.tileData?.monthly?.percentage }}%)
+              </span>
+              <span v-else style="font-size:12px">
+                (<font-awesome-icon
+                  :icon="['fas', 'arrow-up']"
+                  style="color:green"
+                />
+                {{ this.tileData?.monthly?.percentage }}%)
+              </span>
+            </h6>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-5">
       <div class="col-12">
         <div class="card">
           <div class="card-body">
+            <div class="btn-group btn-group-sm fa-pull-right" role="group">
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                v-on:click="
+                  getChartPlayerData(
+                    this.apiUrl + '/players/chart/daily/all',
+                    'All time'
+                  )
+                "
+              >
+                All time
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                v-on:click="
+                  getChartPlayerData(
+                    this.apiUrl + '/players/chart/daily/month',
+                    'Last 30 days'
+                  )
+                "
+              >
+                Monthly
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                v-on:click="
+                  getChartPlayerData(
+                    this.apiUrl + '/players/chart/daily/week',
+                    'Last 7 days'
+                  )
+                "
+              >
+                Weekly
+              </button>
+            </div>
+
             <h3>Player activity</h3>
+            <h6>
+              Viewing player activity with filter: <b>{{ filterType }}</b>
+            </h6>
             <apexchart
-              v-if="loaded"
+              id="chart"
               height="400px"
               :options="options"
               :series="series"
@@ -25,11 +160,11 @@
       </div>
     </div>
 
-    <div class="row my-4">
+    <div class="row mb-5">
       <div class="col-12 text-center">
-        <p class="text-muted">Tracking since 08-05-2020</p>
+        <small class="text-muted small">Tracking since 08-05-2020</small> <br />
         <a href="//github.com/quintenps/mapleroyals_analytics"
-          ><img src="./assets/github.png"
+          ><font-awesome-icon :icon="['fab', 'github']" style="color:#24292e;"
         /></a>
       </div>
     </div>
@@ -41,12 +176,13 @@ import axios from "axios";
 
 export default {
   name: "App",
-  components: {},
   data: () => ({
-    loaded: false,
+    apiUrl: process.env.VUE_APP_API_HOST,
+    filterType: "Daily",
+    tileData: [],
     options: {
       chart: {
-        id: "mapleroyals-players",
+        id: "chart",
         type: "area",
         zoom: {
           autoScaleYaxis: true,
@@ -73,13 +209,10 @@ export default {
         size: 0,
         style: "hollow",
       },
+      colors: ["#00E396"],
       stroke: {
-        show: true,
         curve: "smooth",
-        lineCap: "butt",
-        colors: undefined,
-        width: 2,
-        dashArray: 0,
+        width: 1,
       },
       xaxis: {
         categories: [],
@@ -99,24 +232,76 @@ export default {
     ],
   }),
   methods: {
-    getPlayerData() {
-      axios
-        .get(process.env.VUE_APP_API_HOST + "/players")
+    async getChartPlayerData(url, filterType) {
+      this.filterType = filterType;
+      let dates = [];
+      let players = [];
+
+      await axios
+        .get(url)
         .then((resp) => {
           resp.data.forEach((element) => {
-            this.options.xaxis.categories.push(element["DATE_FORMAT"]);
-            this.series[0].data.push(element["players"]);
+            dates.push(element["DATE_FORMAT"]);
+            players.push(element["players"]);
           });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
-          this.loaded = true;
+      let chartOptions = this.options;
+      this.options = {
+        chartOptions,
+        xaxis: {
+          categories: dates,
+          type: "datetime",
+        },
+      };
+
+      window.ApexCharts.exec("chart", "updateSeries", [
+        {
+          data: players,
+        },
+      ]);
+    },
+
+    getTilesPlayerData() {
+      axios
+        .get(process.env.VUE_APP_API_HOST + "/players/tiles")
+        .then((resp) => {
+          this.tileData = resp.data;
+          for (const [key] of Object.entries(resp.data)) {
+            if (key == "online") {
+              continue;
+            }
+
+            this.tileData[key].percentage = (
+              (resp.data[key][0].players / resp.data[key][1].players - 1) *
+              100
+            )
+              .toString()
+              .substr(0, 4);
+          }
         })
         .catch((err) => {
           console.log(err);
         });
     },
+
+    isNegativeStringNumber(string) {
+      if (string.charAt(0) == "-") {
+        return true;
+      }
+
+      return false;
+    },
   },
   mounted() {
-    this.getPlayerData();
+    this.getChartPlayerData(
+      process.env.VUE_APP_API_HOST + "/players/chart/daily/all",
+      "All time"
+    );
+    this.getTilesPlayerData();
   },
 };
 </script>
@@ -126,6 +311,11 @@ export default {
 
 body {
   background-color: #f3f5f7;
+}
+
+h6 {
+  color: #3d3232;
+  font-weight: 400;
 }
 
 #logo {
