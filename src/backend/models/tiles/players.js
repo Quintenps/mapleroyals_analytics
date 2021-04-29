@@ -3,7 +3,7 @@ const {queryAndCache} = require('../../querycache')
 module.exports = {
     async getPlayersTileNowOnline() {
         return queryAndCache(
-            'SELECT ROUND(AVG(`players`), 0) AS players, DATE_FORMAT(DATE,\'%Y-%m-%d\') AS DATE_FORMAT FROM players WHERE server_online=1 GROUP BY DATE_FORMAT ORDER BY DATE_FORMAT DESC LIMIT 1',
+            'SELECT PLAYERS as players, DATE as DATE_FORMAT FROM players WHERE server_online=1 ORDER BY DATE_FORMAT DESC LIMIT 1',
             "players_online",
             60,
             false
